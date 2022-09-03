@@ -1,16 +1,8 @@
-import sys
-import random
-import client as Client
-import send as Send
-from PySide6 import QtCore, QtWidgets, QtGui
+import client
+import send
 
-
-# if __name__ == "__main__":
-    # app = QtWidgets.QApplication([])
-
-    # widget = Client.Bemc()
-    # widget.show()
-
-    # sys.exit(app.exec())
+if __name__ == "__main__":
+    client = client.Client()
+    client.show_email_list()
 
     

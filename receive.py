@@ -1,5 +1,7 @@
 import email
 import imaplib
+import env
+
 
 class Receive():
     def __init__(self):
@@ -9,9 +11,11 @@ class Receive():
     def auth(self):
         # setup authentication
         # in a function to allow later account changes
-        self.EMAIL = 'dbdanielbboling70@gmail.com'
-        self.PASSWORD = 'ijdwpwguacflurbb'
-        self.SERVER = 'imap.gmail.com'
+        creds = env.Credentials()
+        self.EMAIL = creds.EMAIL
+        self.PASSWORD = creds.PASSWORD
+        self.SERVER = creds.SERVER
+
         self.mail = imaplib.IMAP4_SSL(self.SERVER)
         self.mail.login(self.EMAIL, self.PASSWORD)
 
