@@ -1,6 +1,7 @@
 import smtplib
+from dotenv import load_dotenv
+import os
 from email.mime.text import MIMEText
-import client_dep as Client
 
 
 class Send():
@@ -9,9 +10,8 @@ class Send():
 
     smtp_ssl_host = 'smtp.gmail.com'
     smtp_ssl_port = 465
-    # use username or email to log in
-    username = 'dbdanielbboling70@gmail.com'
-    password = 'ijdwpwguacflurbb'
+    EMAIL = os.environ.get('EMAIL')
+    PASSWORD = os.environ.get('PASSWORD')
 
     #from_addr = 'dbdanielbboling70@gmail.com'
     #to_addrs = ['dbolingconsulting@gmail.com']

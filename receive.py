@@ -1,20 +1,22 @@
 import email
 import imaplib
-import env
+import sys
+from dotenv import load_dotenv
+import os
 
 
 class Receive():
     def __init__(self):
+        load_dotenv()
         self.auth()
 
 
     def auth(self):
         # setup authentication
         # in a function to allow later account changes
-        creds = env.Credentials()
-        self.EMAIL = creds.EMAIL
-        self.PASSWORD = creds.PASSWORD
-        self.SERVER = creds.SERVER
+        self.EMAIL = os.environ.get('EMAIL')
+        self.PASSWORD = os.environ.get('PASSWORD')
+        self.SERVER = os.environ.get('SERVER')
 
         self.mail = imaplib.IMAP4_SSL(self.SERVER)
         self.mail.login(self.EMAIL, self.PASSWORD)

@@ -2,6 +2,9 @@ import urwid
 import sys
 import send
 import email
+import html2text
+import os
+import mailparser
 from receive import Receive
 
 
@@ -17,21 +20,16 @@ class Client():
             status, data = self.mail.fetch(i, '(RFC822)')
 
             for response_part in data:
-                if isinstance(response_part, tuple):
+                if isinstance(response_part, tuple):    
+                ## not sure what the point of this is for as response part in my testing 
+                ## only ever has 2 indexes, both are tuples
+                ## assume this is for edgecases
                     message = email.message_from_bytes(response_part[1])
+                    ## response_part only have 2 indexes - the first is the email info (RFC822)
+                    ## the second is the actual email content
 
-                    if message.is_multipart():
-                        mail_content = ''
-
-                        for part in message.get_payload():
-                            if part.get_content_type() == 'text/plan':
-                                mail_content += part.get_payload()
-
-                    else:
-                        mail_content = message.get_payload()
                     
             mail_from = message['from']
-            mail_content = message['content']
             mail_subject = message['subject']
             button = urwid.Button(f'{mail_from} | {mail_subject}')
             urwid.connect_signal(button, 'click', self.item_chosen, i)
@@ -46,20 +44,20 @@ class Client():
             if isinstance(response_part, tuple):
                 message = email.message_from_bytes(response_part[1])
 
+
                 if message.is_multipart():
                     mail_content = ''
 
                     for part in message.get_payload():
-                        if part.get_content_type() == 'text/plan':
+                        if part.get_content_type() == 'text/plain':
                             mail_content += part.get_payload()
 
                 else:
                     mail_content = message.get_payload()
 
                 mail_from = message['from']
-                mail_content = message['content']
                 mail_subject = message['subject']
-                response = urwid.Text([f'{mail_from}', '\n', f'{mail_subject}', '\n\n', f'{mail_content}'])
+                response = urwid.Text([f'{mail_content}'])
                 self.main.original_widget = urwid.Filler(urwid.Pile([response]))
 
 
